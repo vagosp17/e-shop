@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Button,
+  ActivityIndicator,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
@@ -7,6 +15,7 @@ import * as cartActions from "../../store/actions/cart";
 import * as orderActions from "../../store/actions/order";
 
 const CartScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => {
@@ -25,6 +34,12 @@ const CartScreen = () => {
     );
   });
 
+  const sendOrderHandler = async () => {
+    setIsLoading(true);
+    await dispatch(orderActions.addOrder(cartItems, cartTotalAmount));
+    setIsLoading(false);
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
@@ -34,14 +49,16 @@ const CartScreen = () => {
             ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
           </Text>
         </Text>
-        <Button
-          color={Colors.accent}
-          title="Order Now"
-          disabled={cartItems.length === 0}
-          onPress={() => {
-            dispatch(orderActions.addOrder(cartItems, cartTotalAmount));
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={Colors.primary} />
+        ) : (
+          <Button
+            color={Colors.accent}
+            title="Order Now"
+            disabled={cartItems.length === 0}
+            onPress={sendOrderHandler}
+          />
+        )}
       </View>
 
       <FlatList
