@@ -1,5 +1,13 @@
 import React from "react";
-import { StyleSheet, Button, FlatList, Platform, Alert } from "react-native";
+import {
+  StyleSheet,
+  Button,
+  FlatList,
+  View,
+  Platform,
+  Alert,
+  Text,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,12 +38,31 @@ const UserProductsScreen = (props) => {
     ]);
   };
 
+  if (userProducts.length === 0) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+          padding: 10,
+        }}
+      >
+        <Text style={{ fontFamily: "open-sans-bold", fontSize: 14 }}>
+          No Products found,maybe start creating some.
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={userProducts}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <ProductItem
+          key={itemData.item.id}
           product={itemData.item}
           onSelect={() => editProductHandler(itemData.item.id)}
         >
