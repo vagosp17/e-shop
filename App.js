@@ -14,7 +14,7 @@ import ShopNavigator from "./navigation/ShopNavigator";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { useState } from "react";
-import NavigationContainer from "./navigation/NavigationContainer";
+import AppNavigator from "./navigation/AppNavigator";
 
 const rootReducer = combineReducers({
   products: productsReducer,
@@ -49,7 +49,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer />
+      <AppNavigator />
     </Provider>
   );
 }

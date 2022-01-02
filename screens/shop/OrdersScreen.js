@@ -65,7 +65,7 @@ const OrdersScreen = (props) => {
   );
 };
 
-OrdersScreen.navigationOptions = (NavData) => {
+export const screenOptions = (NavData) => {
   return {
     headerTitle: "Your Orders",
     headerLeft: () => (
