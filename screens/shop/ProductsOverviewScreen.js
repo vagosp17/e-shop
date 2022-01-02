@@ -41,13 +41,10 @@ const ProductsOverviewScreen = (props) => {
   }, [dispatch, setIsLoading, setErr]);
 
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener(
-      "willFocus",
-      loadProducts
-    );
+    const unsubscribe = props.navigation.addListener("focus", loadProducts);
 
     return () => {
-      willFocusSub.remove();
+      unsubscribe();
     };
   }, [loadProducts]);
 
@@ -114,7 +111,7 @@ const ProductsOverviewScreen = (props) => {
   );
 };
 
-ProductsOverviewScreen.navigationOptions = (NavData) => {
+export const screenOptions = (NavData) => {
   return {
     headerTitle: "All Products",
     headerLeft: () => (
